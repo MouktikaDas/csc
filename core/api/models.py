@@ -20,7 +20,6 @@ class Country(models.Model):
     subregion = models.TextField(null=True, blank=True)
     latitude = models.TextField(null=True, blank=True)
     longitude = models.TextField(null=True, blank=True)
-    emoji = models.TextField(null=True, blank=True)
     emojiU = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
@@ -34,7 +33,7 @@ class State(models.Model):
     latitude = models.TextField(null=True, blank=True)
     longitude = models.TextField(null=True, blank=True)
     type = models.TextField(null=True, blank=True)
-    country_id = models.ForeignKey(
+    country = models.ForeignKey(
         Country, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
@@ -46,9 +45,9 @@ class City(models.Model):
     name = models.TextField(null=True, blank=True)
     latitude = models.TextField(null=True, blank=True)
     longitude = models.TextField(null=True, blank=True)
-    state_id = models.ForeignKey(
+    state = models.ForeignKey(
         State, null=True, blank=True, on_delete=models.CASCADE)
-    country_id = models.ForeignKey(
+    country = models.ForeignKey(
         Country, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self) -> str:

@@ -24,13 +24,13 @@ def run():
         for state in country['states']:
             sf = list(map(state.get,state_fields))
             sf = dict(zip(state_fields,sf))
-            sf['country_id_id'] = country['id']
+            sf['country_id'] = country['id']
             state_list.append(sf)
             for city in state['cities']:
                 cif = list(map(city.get,city_fields))
                 cif = dict(zip(city_fields,cif))
-                cif['state_id_id'] = state['id']
-                cif['country_id_id'] = country['id']
+                cif['state_id'] = state['id']
+                cif['country_id'] = country['id']
                 city_list.append(cif)
     countryl = [Country(**data_dict) for data_dict in country_list]
     countries = Country.objects.bulk_create(countryl)
