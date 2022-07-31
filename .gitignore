@@ -116,3 +116,4 @@ dmypy.json
 # Testing Files
 .vscode/
 *.Identifier
+core/assets
