@@ -24,7 +24,7 @@ class Country(models.Model):
     emojiU = models.TextField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return f"{str(id)} {self.name}"
+        return f"{str(self.id)} {self.name}"
 
 
 class State(models.Model):
@@ -38,7 +38,7 @@ class State(models.Model):
         Country, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{str(id)} {self.name}"
+        return f"{str(self.id)} {self.name}"
 
 
 class City(models.Model):
@@ -52,4 +52,4 @@ class City(models.Model):
         Country, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{str(id)} {self.name}"
+        return f"{str(self.id)} {self.name}"
