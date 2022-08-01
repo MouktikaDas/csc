@@ -1,13 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country-State-City</title>
+
+    <!-- Vendor CSS -->
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link href="./new.css" rel="stylesheet" />
+    <style>
+        body {
+            display: grid;
+        }
+
+        label {
+            display: block;
+        }
+
+        h1 {
+            color: teal;
+        }
+
+        .container {
+            margin: auto;
+        }
+
+        pre {
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <nav class="bg-indigo-600 p-2 mt-0 fixed w-full z-10 top-0">
+        <div class="container mx-auto flex flex-wrap items-center">
+            <div class="flex w-full md:w-1/2 justify-center md:justify-start text-white font-bold">
+                <div class="text-white no-underline hover:text-white hover:no-underline">
+                    <span class="text-2xl pl-2">🌍 Country State City Database Demo</span>
+                </div>
+            </div>
+            <div class="flex w-full content-center justify-between md:w-1/2 md:justify-end">
+                <a href="https://github.com/dr5hn/countries-states-cities-database" class="github" target="_blank"
+                    rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.725-1.335-1.725-1.087-.731.084-.716.084-.716 1.205.082 1.838 1.215 1.838 1.215 1.07 1.803 2.809 1.282 3.495.981.108-.763.417-1.282.76-1.577-2.665-.295-5.466-1.309-5.466-5.827 0-1.287.465-2.339 1.235-3.164-.135-.298-.54-1.497.105-3.121 0 0 1.005-.316 3.3 1.209.96-.262 1.98-.392 3-.398 1.02.006 2.04.136 3 .398 2.28-1.525 3.285-1.209 3.285-1.209.645 1.624.24 2.823.12 3.121.765.825 1.23 1.877 1.23 3.164 0 4.53-2.805 5.527-5.475 5.817.42.354.81 1.077.81 2.182 0 1.578-.015 2.846-.015 3.229 0 .309.21.678.825.56C20.565 21.917 24 17.495 24 12.292 24 5.78 18.627.5 12 .5z">
+                        </path>
+                    </svg>GitHub</a>
+            </div>
+        </div>
+    </nav>
+    <h1 style="font-size:40px; margin-top:70px; font-weight:bolder; text-align:center;">All countries Dropdown List</h1>
+
     <label for="country">Choose a Country:</label>
     <select name="country" id="country">
         <!-- <option value="volvo">Volvo</option> -->
@@ -20,90 +67,92 @@
     <label for="city">Choose a City:</label>
     <select name="city" id="city">
     </select>
+
     <br>
     <pre id="data-country"></pre>
     <pre id="data-state"></pre>
     <pre id="data-city"></pre>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script defer>
-    var country=[]
-    var city=[]
-    var state=[]
-    // get countries ajax
-    
-    $('#country').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
-    $.ajax({
-        url: 'https://csc.pythonanywhere.com/api/country/',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-            country = data;
-            for (var i = 0; i < data.length; i++) {
-                $('#country').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
-            }
-        }
-    });
+        var country = []
+        var city = []
+        var state = []
+        // get countries ajax
 
-
-    // get states ajax
-    $('#country').on('change', function() {
-        $('#state').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
-        $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
-        $('#data-country').text('');
-        $('#data-state').text('');
-        $('#data-city').text('');
-        value = $(this).val();
-        value = JSON.parse(value);
-        if(value=='select')return;
-        $('#data-country').text(JSON.stringify(value,undefined,2));
+        $('#country').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
         $.ajax({
-            url: 'https://csc.pythonanywhere.com/api/state/' + value.id,
+            url: 'https://csc.pythonanywhere.com/api/country/',
             type: 'GET',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
-                state = data;
+                country = data;
                 for (var i = 0; i < data.length; i++) {
-                    $('#state').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
+                    $('#country').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
                 }
             }
         });
-    });
 
 
-    // get cities ajax
-    $('#state').on('change', function() {
-        $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
-        $('#data-state').text('');
-        $('#data-city').text('');
-        value = $(this).val();
-        value = $(this).val();
-        value = JSON.parse(value);
-        if(value=='select')return;
-        $('#data-state').text(JSON.stringify(value,undefined,2));
-        $.ajax({
-            url: 'https://csc.pythonanywhere.com/api/city/' + value.id,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-                city = data;
-                for (var i = 0; i < data.length; i++) {
-                    $('#city').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
+        // get states ajax
+        $('#country').on('change', function () {
+            $('#state').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+            $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+            $('#data-country').text('');
+            $('#data-state').text('');
+            $('#data-city').text('');
+            value = $(this).val();
+            value = JSON.parse(value);
+            if (value == 'select') return;
+            $('#data-country').text(JSON.stringify(value, undefined, 2));
+            $.ajax({
+                url: 'https://csc.pythonanywhere.com/api/state/' + value.id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    state = data;
+                    for (var i = 0; i < data.length; i++) {
+                        $('#state').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
+                    }
                 }
-            }
+            });
         });
-    });
-    
-    $('#city').on('change', function() {
-        $('#data-city').text('');
-        value = $(this).val();
-        value = JSON.parse(value);
-        if(value=='select')return;
-        $('#data-city').text(JSON.stringify(value,undefined,2));
-    });
+
+
+        // get cities ajax
+        $('#state').on('change', function () {
+            $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+            $('#data-state').text('');
+            $('#data-city').text('');
+            value = $(this).val();
+            value = $(this).val();
+            value = JSON.parse(value);
+            if (value == 'select') return;
+            $('#data-state').text(JSON.stringify(value, undefined, 2));
+            $.ajax({
+                url: 'https://csc.pythonanywhere.com/api/city/' + value.id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    city = data;
+                    for (var i = 0; i < data.length; i++) {
+                        $('#city').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
+                    }
+                }
+            });
+        });
+
+        $('#city').on('change', function () {
+            $('#data-city').text('');
+            value = $(this).val();
+            value = JSON.parse(value);
+            if (value == 'select') return;
+            $('#data-city').text(JSON.stringify(value, undefined, 2));
+        });
     </script>
 </body>
+
 </html>
