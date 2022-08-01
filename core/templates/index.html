@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country-State-City</title>
+</head>
+<body>
+    
+    <label for="country">Choose a Country:</label>
+    <select name="country" id="country">
+        <!-- <option value="volvo">Volvo</option> -->
+    </select>
+    <br>
+    <label for="state">Choose a State:</label>
+    <select name="state" id="state">
+    </select>
+    <br>
+    <label for="city">Choose a City:</label>
+    <select name="city" id="city">
+    </select>
+    <br>
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script defer>
+    var country=[]
+    var city=[]
+    var state=[]
+    // get countries ajax
+    $.ajax({
+        url: 'https://csc.pythonanywhere.com/api/country/',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+            country = data;
+            for (var i = 0; i < data.length; i++) {
+                $('#country').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+            }
+        }
+    });
+    // get states ajax
+    $('#country').on('change', function() {
+        $('#state').html('');
+        $('#city').html('');
+        $.ajax({
+            url: 'https://csc.pythonanywhere.com/api/state/' + $(this).val(),
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                state = data;
+                for (var i = 0; i < data.length; i++) {
+                    $('#state').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                }
+            }
+        });
+    });
+    // get cities ajax
+    $('#state').on('change', function() {
+        $('#city').html('');
+        $.ajax({
+            url: 'https://csc.pythonanywhere.com/api/city/' + $(this).val(),
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                city = data;
+                for (var i = 0; i < data.length; i++) {
+                    $('#city').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                }
+            }
+        });
+    });    
+    </script>
+</body>
+</html>
