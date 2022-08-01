@@ -21,7 +21,9 @@
     <select name="city" id="city">
     </select>
     <br>
-    
+    <pre id="data-country"></pre>
+    <pre id="data-state"></pre>
+    <pre id="data-city"></pre>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script defer>
@@ -29,6 +31,8 @@
     var city=[]
     var state=[]
     // get countries ajax
+    
+    $('#country').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
     $.ajax({
         url: 'https://csc.pythonanywhere.com/api/country/',
         type: 'GET',
@@ -37,43 +41,69 @@
             console.log(data);
             country = data;
             for (var i = 0; i < data.length; i++) {
-                $('#country').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                $('#country').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
             }
         }
     });
+
+
     // get states ajax
     $('#country').on('change', function() {
-        $('#state').html('');
-        $('#city').html('');
+        $('#state').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+        $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+        $('#data-country').text('');
+        $('#data-state').text('');
+        $('#data-city').text('');
+        value = $(this).val();
+        value = JSON.parse(value);
+        if(value=='select')return;
+        $('#data-country').text(JSON.stringify(value,undefined,2));
         $.ajax({
-            url: 'https://csc.pythonanywhere.com/api/state/' + $(this).val(),
+            url: 'https://csc.pythonanywhere.com/api/state/' + value.id,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 console.log(data);
                 state = data;
                 for (var i = 0; i < data.length; i++) {
-                    $('#state').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                    $('#state').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
                 }
             }
         });
     });
+
+
     // get cities ajax
     $('#state').on('change', function() {
-        $('#city').html('');
+        $('#city').html(`<option value='${JSON.stringify('select')}'>--select--</option>`);
+        $('#data-state').text('');
+        $('#data-city').text('');
+        value = $(this).val();
+        value = $(this).val();
+        value = JSON.parse(value);
+        if(value=='select')return;
+        $('#data-state').text(JSON.stringify(value,undefined,2));
         $.ajax({
-            url: 'https://csc.pythonanywhere.com/api/city/' + $(this).val(),
+            url: 'https://csc.pythonanywhere.com/api/city/' + value.id,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 console.log(data);
                 city = data;
                 for (var i = 0; i < data.length; i++) {
-                    $('#city').append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
+                    $('#city').append(`<option value='${JSON.stringify(data[i])}'>${data[i].name}</option>`);
                 }
             }
         });
-    });    
+    });
+    
+    $('#city').on('change', function() {
+        $('#data-city').text('');
+        value = $(this).val();
+        value = JSON.parse(value);
+        if(value=='select')return;
+        $('#data-city').text(JSON.stringify(value,undefined,2));
+    });
     </script>
 </body>
 </html>
