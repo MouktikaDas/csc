@@ -6,7 +6,7 @@
 
 ### Delete all db entries
 
-`python manage.py runscript delete_all`
+`python manage.py runscript delete_model_data`
 
 ## Demo:
 [csc.pythonanywhere.com](https://csc.pythonanywhere.com/)
